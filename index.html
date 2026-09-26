@@ -87,14 +87,14 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--warn);outline-o
   <div class="app">
     <section class="panel monitor-only" id="joinPanel">
       <h2>計測スマホのコード</h2>
-      <input type="text" id="codeIn" inputmode="numeric" maxlength="4" placeholder="1234" aria-label="4桁のコード">
+      <input type="text" id="codeIn" inputmode="numeric" maxlength="6" placeholder="123456" aria-label="6桁のコード">
       <div class="btns"><button id="joinBtn">つなぐ</button></div>
       <p class="status" id="monStatus"></p>
     </section>
 
     <section class="panel measure-only">
       <div class="room">
-        <div><div class="hint">メンバー用コード</div><div class="code" id="roomCode">----</div></div>
+        <div><div class="hint">メンバー用コード</div><div class="code" id="roomCode">------</div></div>
         <button class="small ghost" id="copyBtn">リンクをコピー</button>
       </div>
       <p class="status" id="roomStatus">共有の準備中…</p>
@@ -157,7 +157,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--warn);outline-o
 <script>
 (function(){
   const $=id=>document.getElementById(id);
-  const PREFIX='rehmeter-hk-';
+  const PREFIX='rehmeter-hk-7q3x-';
   const hero=$('hero'),stateEl=$('state'),numEl=$('num'),heroSub=$('heroSub');
   const thr=$('thr'),thrVal=$('thrVal'),startBtn=$('startBtn'),errEl=$('err');
   const fills=[0,1,2,3].map(i=>$('b'+i));
@@ -194,7 +194,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--warn);outline-o
   function updCount(){roomStatus(conns.length?'メンバー '+conns.length+'台が見てる':'メンバーのスマホで「見るだけ」→このコードを入力');}
   function openRoom(){
     if(typeof Peer==='undefined'){roomStatus('共有機能を読み込めなかった。ネット接続を確認してね');return;}
-    room=String(Math.floor(1000+Math.random()*9000));
+    room=String(Math.floor(100000+Math.random()*900000));
     peer=new Peer(PREFIX+room);
     peer.on('open',()=>{$('roomCode').textContent=room;updCount();});
     peer.on('connection',c=>{
@@ -219,7 +219,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--warn);outline-o
   let mpeer,mcode,retryT,lastData=0;
   function monStatus(t){$('monStatus').textContent=t;}
   function join(code){
-    if(!/^\d{4}$/.test(code)){monStatus('4桁の数字を入れてね');return;}
+    if(!/^\d{6}$/.test(code)){monStatus('6桁の数字を入れてね');return;}
     if(typeof Peer==='undefined'){monStatus('共有機能を読み込めなかった。ネット接続を確認してね');return;}
     mcode=code;monStatus('接続中…');
     if(!mpeer){
